@@ -52,15 +52,15 @@ function Generator() {
 
       {/* Functionnalities */}
 
-      <div className="relative h-auto md:h-auto w-full lg:w-[1000px] bg-white rounded-xl mt-9 md:mt-12 lg:mt-14 px-7 py-6 overflow-hidden shadow-primary shadow-func_box">
+      <div className="relative h-auto md:h-auto w-full lg:w-[1000px] bg-white rounded-xl mt-9 md:mt-12 lg:mt-14 px-7 py-6  shadow-primary shadow-func_box">
         <div
           className="w-full space-y-[16px] md:space-y-0   text-base md:text-lg text-secondary font-medium grid grid-cols-1 md:grid-cols-2 
         md:gap-8 md:row-auto"
         >
-          <div className="switch_div relative ">
+          <div className="switch_div relative">
             <p>Taille</p>
             <Slider
-              className="absolute w-2/4 md:w-2/3 top-4 right-8 md:flex md:top-0 md:right-2"
+              className="absolute w-2/4 md:w-2/3 -top-2.5 right-2 md:flex md:top-0 md:right-2"
               defaultValue={50}
               aria-label="Default"
               valueLabelDisplay="auto"
