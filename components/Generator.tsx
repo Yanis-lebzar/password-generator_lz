@@ -41,9 +41,9 @@ function Generator() {
 
           {/* Sûreté du mot de passe */}
           <button
-            className="h-10 w-20 md:h-12 md:w-24 lg:w-28 mt-9 lg:mt-0 bg-white outline outline-red-600 outline-3 rounded-3xl text-sm md:text-lg font-semibold text-red-600 cursor-pointer 
-          uppercase
-        hover:bg-red-600 hover:text-white transition-all ease-in-out duration-200"
+            className="h-12 w-20 md:h-14 md:w-24 lg:w-28 mt-9 lg:mt-0 bg-white  border-red-600 border-2 rounded-3xl lg:rounded-full text-sm md:text-lg font-semibold text-red-600 cursor-pointer 
+          uppercase hover:bg-red-600 hover:text-white
+         transition-all ease-in-out duration-200"
           >
             Fort
           </button>
