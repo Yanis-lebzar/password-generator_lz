@@ -1,21 +1,78 @@
 import Image from "next/image";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Switch from "@mui/material/Switch";
 import Slider from "@mui/material/Slider";
+import generator from "generate-password";
 
 const label = { inputProps: { "aria-label": "Switch demo" } };
 
 function Generator() {
+  const [passwordLength, setPasswordLength] = useState(50);
+  const [maj, setMaj] = useState(true);
+  const [numbers, setNumbers] = useState(true);
+  const [similarCharacters, setSimilarCharacters] = useState(false);
+  const [min, setMin] = useState(true);
+  const [symboles, setSymboles] = useState(true);
+  const [letters, setLetters] = useState(true);
+  const [allcheck, setAllCheck] = useState(false);
+
+  console.log(
+    passwordLength,
+    maj,
+    numbers,
+    similarCharacters,
+    min,
+    symboles,
+    letters
+  );
+
+  // const password: string = generator({
+  //   charsQty: passwordLength,
+  //   isUppercase: maj,
+  //   haveNumbers: numbers,
+  //   haveString: letters,
+  //   haveSymbols: symboles,
+  // });
+
+  const passGen = () => {
+    // password generator from generate-password package
+    const password = generator.generate({
+      length: passwordLength,
+      numbers: numbers,
+      uppercase: maj,
+      symbols: symboles,
+      lowercase: min,
+      excludeSimilarCharacters: similarCharacters,
+    });
+
+    // delete all characters if it is pressed
+
+    if (!letters) {
+      return password.replace(/\D/g, "");
+    } else {
+      return password;
+    }
+  };
+
+  console.log(passGen());
+  // useEffect(() => {
+  //   if (!maj && !numbers && !min) {
+  //     setAllCheck(true);
+  //   } else {
+  //     setAllCheck(false);
+  //   }
+  // }, [password]);
   return (
     <div className="mt-10 lg:mt-12 w-full">
       {/* Input */}
       <div className="relative lg:flex lg:justify-start lg:space-x-10  ">
         <div className=" lg:relative h-10 md:h-14 w-full lg:w-[687px] ">
           <input
-            className="w-full h-full outline outline-primary rounded-full outline-3 focus:outline-4  bg-white px-5 focus:shadow-lg"
+            className="w-full h-full border-2 outline-none border-primary rounded-full focus:border-4 bg-white px-5 focus:shadow-lg  "
             type="text"
             name=""
             id=""
+            value={passGen()}
           />
           <div className="absolute top-2 right-3 md:top-2.5 md:right-4 w-6 h-6 md:w-9 md:h-9   ">
             <Image
@@ -64,33 +121,59 @@ function Generator() {
               defaultValue={50}
               aria-label="Default"
               valueLabelDisplay="auto"
+              onChange={(event) => setPasswordLength(event.target.value)}
             />
           </div>
 
           <div className="switch_div">
             <p>Minuscule</p>
-            <Switch {...label} defaultChecked color="primary" />
+            <Switch
+              {...label}
+              defaultChecked
+              color="primary"
+              onChange={(event) => setMin(event.target.checked)}
+            />
           </div>
           <div className="switch_div">
             <p>Majuscule</p>
-            <Switch {...label} defaultChecked />
+            <Switch
+              {...label}
+              defaultChecked
+              onChange={(event) => setMaj(event.target.checked)}
+            />
           </div>
 
           <div className="switch_div">
             <p>Lettres</p>
-            <Switch {...label} defaultChecked />
+            <Switch
+              {...label}
+              defaultChecked
+              onChange={(event) => setLetters(event.target.checked)}
+            />
           </div>
           <div className="switch_div">
             <p>Nombres</p>
-            <Switch {...label} defaultChecked />
+            <Switch
+              {...label}
+              defaultChecked
+              onChange={(event) => setNumbers(event.target.checked)}
+            />
           </div>
           <div className="switch_div">
             <p>Symboles</p>
-            <Switch {...label} defaultChecked />
+            <Switch
+              {...label}
+              defaultChecked
+              onChange={(event) => setSymboles(event.target.checked)}
+            />
           </div>
           <div className="switch_div">
             <p>Exclure des caractères similaires</p>
-            <Switch {...label} defaultChecked />
+            <Switch
+              defaultChecked={false}
+              {...label}
+              onChange={(event) => setSimilarCharacters(event.target.checked)}
+            />
           </div>
         </div>
       </div>
