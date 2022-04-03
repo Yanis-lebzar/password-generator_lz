@@ -35,16 +35,20 @@ function Generator() {
   // });
 
   const passGen = () => {
-    // password generator from generate-password package
-    const password = generator.generate({
-      length: passwordLength,
-      numbers: numbers,
-      uppercase: maj,
-      symbols: symboles,
-      lowercase: min,
-      excludeSimilarCharacters: similarCharacters,
-    });
-
+    let password = "";
+    try {
+      // password generator from generate-password package
+      password = generator.generate({
+        length: passwordLength,
+        numbers: numbers,
+        uppercase: maj,
+        symbols: symboles,
+        lowercase: min,
+        excludeSimilarCharacters: similarCharacters,
+      });
+    } catch (error) {
+      console.log(error);
+    }
     // delete all characters if it is pressed
 
     if (!letters) {
@@ -54,7 +58,6 @@ function Generator() {
     }
   };
 
-  console.log(passGen());
   // useEffect(() => {
   //   if (!maj && !numbers && !min) {
   //     setAllCheck(true);
@@ -72,7 +75,7 @@ function Generator() {
             type="text"
             name=""
             id=""
-            value={passGen()}
+            value={passGen() ? passGen() : " "}
           />
           <div className="absolute top-2 right-3 md:top-2.5 md:right-4 w-6 h-6 md:w-9 md:h-9   ">
             <Image
