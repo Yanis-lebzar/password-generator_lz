@@ -14,7 +14,9 @@ function Generator() {
   const [min, setMin] = useState(true);
   const [symboles, setSymboles] = useState(true);
   const [letters, setLetters] = useState(true);
-  const [allcheck, setAllCheck] = useState(false);
+  // const [allcheck, setAllCheck] = useState(false);
+  const [refresh, setRefresh] = useState(false);
+  const [passwordValue, setPasswordValue] = useState("");
 
   console.log(
     passwordLength,
@@ -34,30 +36,75 @@ function Generator() {
   //   haveSymbols: symboles,
   // });
 
-  const passGen = () => {
-    let password = "";
-    try {
-      // password generator from generate-password package
-      password = generator.generate({
-        length: passwordLength,
-        numbers: numbers,
-        uppercase: maj,
-        symbols: symboles,
-        lowercase: min,
-        excludeSimilarCharacters: similarCharacters,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-    // delete all characters if it is pressed
+  // const passGen = () => {
+  //   let password = "";
+  //   try {
+  //     // password generator from generate-password package
+  //     password = generator.generate({
+  //       length: passwordLength,
+  //       numbers: numbers,
+  //       uppercase: maj,
+  //       symbols: symboles,
+  //       lowercase: min,
+  //       excludeSimilarCharacters: similarCharacters,
+  //       strict: refresh,
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  //   // delete all characters if it is pressed
 
-    if (!letters) {
-      return password.replace(/\D/g, "");
-    } else {
-      return password;
-    }
-  };
+  //   if (!letters) {
+  //     setPasswordValue(password.replace(/[A-Za-z]/g, ""));
+  //   } else {
+  //     return setPasswordValue(password);
+  //   }
+  // };
+  let password = "";
+  // let borderCss = "border-600-green";
+  useEffect(
+    (password: string) => {
+      try {
+        // password generator from generate-password package
+        password = generator.generate({
+          length: passwordLength,
+          numbers: numbers,
+          uppercase: maj,
+          symbols: symboles,
+          lowercase: min,
+          excludeSimilarCharacters: similarCharacters,
+          strict: refresh,
+        });
+      } catch (error) {
+        console.log(error);
+      }
 
+      // button color "fort" "faible"
+      // if (passwordLength > 10) {
+      //   borderCss = "border-600-red";
+      // }
+      // delete all characters if it is pressed
+
+      if (!letters) {
+        setMin(false);
+        setMaj(false);
+        setPasswordValue(password?.replace(/[A-Za-z]/g, ""));
+      } else {
+        return setPasswordValue(password);
+      }
+    },
+    [
+      maj,
+      numbers,
+      letters,
+      symboles,
+      refresh,
+      min,
+      similarCharacters,
+      passwordLength,
+    ]
+  );
+  // console.log(passwordValue);
   // useEffect(() => {
   //   if (!maj && !numbers && !min) {
   //     setAllCheck(true);
@@ -71,19 +118,21 @@ function Generator() {
       <div className="relative lg:flex lg:justify-start lg:space-x-10  ">
         <div className=" lg:relative h-10 md:h-14 w-full lg:w-[687px] ">
           <input
-            className="w-full h-full border-2 outline-none border-primary rounded-full focus:border-4 bg-white px-5 focus:shadow-lg  "
+            className="w-full h-full border-2 outline-none border-primary rounded-full focus:border-4 bg-white pr-10 pl-5 md:pr-14 md:pl-6 lg:pr-16 lg:pl-6 focus:shadow-lg text-center font-bold  "
             type="text"
             name=""
             id=""
-            value={passGen() ? passGen() : " "}
+            value={passwordValue}
           />
-          <div className="absolute top-2 right-3 md:top-2.5 md:right-4 w-6 h-6 md:w-9 md:h-9   ">
+          {/* Refresh Icon */}
+          <div className="absolute top-2 right-3 md:top-2.5 md:right-4 w-6 h-6 md:w-9 md:h-9  hover:animate-spin transition-all duration-300">
             <Image
               className="cursor-pointer "
               alt="bouton pour rafraichir"
               src="/icons/refresh.svg"
               layout="fill"
               quality={100}
+              onClick={() => setRefresh(!refresh)}
             />
           </div>
         </div>
@@ -95,15 +144,20 @@ function Generator() {
             className="h-12 w-20 md:h-14 md:w-24 lg:w-28 mt-9 lg:mt-0 bg-primary rounded-3xl lg:rounded-full text-sm md:text-lg uppercase font-semibold text-white
        hover:bg-secondary transition-all ease-in-out 
         duration-200"
+            onClick={() => {
+              navigator.clipboard.writeText(passwordValue);
+            }}
           >
             Copier
           </button>
 
           {/* Sûreté du mot de passe */}
           <button
-            className="h-12 w-20 md:h-14 md:w-24 lg:w-28 mt-9 lg:mt-0 bg-white  border-red-600 border-2 rounded-3xl lg:rounded-full text-sm md:text-lg font-semibold text-red-600 cursor-pointer 
+            className={`h-12 w-20 md:h-14 md:w-24 lg:w-28 mt-9 lg:mt-0 bg-white  border-red-600 border-2 rounded-3xl lg:rounded-full text-sm md:text-lg font-semibold text-red-600 cursor-pointer 
           uppercase hover:bg-red-600 hover:text-white
-         transition-all ease-in-out duration-200"
+         transition-all ease-in-out duration-200
+         
+         `}
           >
             Fort
           </button>
@@ -118,7 +172,9 @@ function Generator() {
         md:gap-8 md:row-auto"
         >
           <div className="switch_div relative">
-            <p>Taille</p>
+            <p>
+              Taille (<strong> {passwordLength} </strong>)
+            </p>
             <Slider
               className="absolute w-2/4 md:w-2/3 -top-2.5 right-2 md:flex md:top-0 md:right-2"
               defaultValue={50}
@@ -131,6 +187,7 @@ function Generator() {
           <div className="switch_div">
             <p>Minuscule</p>
             <Switch
+              checked={min}
               {...label}
               defaultChecked
               color="primary"
@@ -140,6 +197,7 @@ function Generator() {
           <div className="switch_div">
             <p>Majuscule</p>
             <Switch
+              checked={maj}
               {...label}
               defaultChecked
               onChange={(event) => setMaj(event.target.checked)}
@@ -149,6 +207,7 @@ function Generator() {
           <div className="switch_div">
             <p>Lettres</p>
             <Switch
+              checked={letters}
               {...label}
               defaultChecked
               onChange={(event) => setLetters(event.target.checked)}
@@ -157,6 +216,7 @@ function Generator() {
           <div className="switch_div">
             <p>Nombres</p>
             <Switch
+              checked={numbers}
               {...label}
               defaultChecked
               onChange={(event) => setNumbers(event.target.checked)}
@@ -165,6 +225,7 @@ function Generator() {
           <div className="switch_div">
             <p>Symboles</p>
             <Switch
+              checked={symboles}
               {...label}
               defaultChecked
               onChange={(event) => setSymboles(event.target.checked)}
@@ -173,6 +234,7 @@ function Generator() {
           <div className="switch_div">
             <p>Exclure des caractères similaires</p>
             <Switch
+              checked={similarCharacters}
               defaultChecked={false}
               {...label}
               onChange={(event) => setSimilarCharacters(event.target.checked)}
