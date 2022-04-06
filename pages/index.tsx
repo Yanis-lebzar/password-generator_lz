@@ -2,8 +2,8 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Header from "../components/Header";
-import Password_generator from "../components/Password_generator";
-import Hero_section from "../components/Hero_section";
+import Password_generator from "../components/password_components/Password_generator";
+import Hero_section from "../components/password_components/Hero_section";
 
 const Home: NextPage = () => {
   return (

@@ -18,4 +18,27 @@
   .switch_div {
     @apply flex justify-between items-center;
   }
+
+  .header_links {
+    @apply hover:text-primary;
+  }
+  .lockDefault {
+    filter: brightness(35%) hue-rotate(263deg) saturate(1980%);
+  }
+  .lock_shadowDefault {
+    filter: brightness(74%) hue-rotate(263deg) saturate(1980%);
+  }
+  .locker {
+    filter: brightness(94%) hue-rotate(183deg) saturate(1180%);
+  }
+  .locker_shadow {
+    filter: brightness(94%) hue-rotate(130deg) saturate(610%);
+  }
+  /* .modules {
+    filter: brightness(74%) hue-rotate(130deg) saturate(910%);
+  }
+
+  .tel {
+    filter: brightness(54%) hue-rotate(90deg) saturate(330%);
+  } */
 }

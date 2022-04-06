@@ -1,13 +1,22 @@
 import Image from "next/image";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Switch from "@mui/material/Switch";
 import Slider from "@mui/material/Slider";
 import generator from "generate-password";
+import { motion } from "framer-motion";
+import CopyTooltip from "./CopyTooltip";
+import { AppContext } from "../../AppContext";
 
 const label = { inputProps: { "aria-label": "Switch demo" } };
 
 function Generator() {
-  const [passwordLength, setPasswordLength] = useState(50);
+  // const sliderDefaultValue = 16;
+
+  // const [passwordLength, setPasswordLength] = useState(sliderDefaultValue);
+
+  const [passwordLength, setPasswordLength, sliderDefaultValue] =
+    useContext(AppContext);
+
   const [maj, setMaj] = useState(true);
   const [numbers, setNumbers] = useState(true);
   const [similarCharacters, setSimilarCharacters] = useState(false);
@@ -17,6 +26,9 @@ function Generator() {
   // const [allcheck, setAllCheck] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [passwordValue, setPasswordValue] = useState("");
+  const [passwordSecurity, setPasswordSecurity] = useState("");
+
+  const [showTooltip, setShowTooltip] = useState(false);
 
   console.log(
     passwordLength,
@@ -28,39 +40,8 @@ function Generator() {
     letters
   );
 
-  // const password: string = generator({
-  //   charsQty: passwordLength,
-  //   isUppercase: maj,
-  //   haveNumbers: numbers,
-  //   haveString: letters,
-  //   haveSymbols: symboles,
-  // });
-
-  // const passGen = () => {
-  //   let password = "";
-  //   try {
-  //     // password generator from generate-password package
-  //     password = generator.generate({
-  //       length: passwordLength,
-  //       numbers: numbers,
-  //       uppercase: maj,
-  //       symbols: symboles,
-  //       lowercase: min,
-  //       excludeSimilarCharacters: similarCharacters,
-  //       strict: refresh,
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  //   // delete all characters if it is pressed
-
-  //   if (!letters) {
-  //     setPasswordValue(password.replace(/[A-Za-z]/g, ""));
-  //   } else {
-  //     return setPasswordValue(password);
-  //   }
-  // };
   let password = "";
+
   // let borderCss = "border-600-green";
   useEffect(
     (password: string) => {
@@ -80,9 +61,19 @@ function Generator() {
       }
 
       // button color "fort" "faible"
-      // if (passwordLength > 10) {
-      //   borderCss = "border-600-red";
-      // }
+      const securityLevel = () => {
+        if (passwordLength > 28) {
+          setPasswordSecurity("très fort");
+        } else if (passwordLength > 6) {
+          setPasswordSecurity("fort");
+        } else {
+          setPasswordSecurity("faible");
+        }
+
+        return passwordSecurity;
+      };
+
+      securityLevel();
       // delete all characters if it is pressed
 
       if (!letters) {
@@ -102,23 +93,17 @@ function Generator() {
       min,
       similarCharacters,
       passwordLength,
+      passwordSecurity,
     ]
   );
-  // console.log(passwordValue);
-  // useEffect(() => {
-  //   if (!maj && !numbers && !min) {
-  //     setAllCheck(true);
-  //   } else {
-  //     setAllCheck(false);
-  //   }
-  // }, [password]);
+
   return (
-    <div className="mt-10 lg:mt-12 w-full">
+    <div className="mt-10 lg:mt-12 w-full z-20 relative">
       {/* Input */}
       <div className="relative lg:flex lg:justify-start lg:space-x-10  ">
         <div className=" lg:relative h-10 md:h-14 w-full lg:w-[687px] ">
           <input
-            className="w-full h-full border-2 outline-none border-primary rounded-full focus:border-4 bg-white pr-10 pl-5 md:pr-14 md:pl-6 lg:pr-16 lg:pl-6 focus:shadow-lg text-center font-bold  "
+            className="w-full h-full border-2 outline-none border-primary rounded-full focus:border-4 bg-white pr-10 pl-5 md:pr-14 md:pl-6 lg:pr-16 lg:pl-6 focus:shadow-lg text-center font-bold md:text-xl lg:text-2xl selection:bg-primary selection:text-white "
             type="text"
             name=""
             id=""
@@ -140,26 +125,39 @@ function Generator() {
         {/* Buttons */}
         <div className="relative space-x-6 lg:space-x-10 flex items-center justify-center md:mt-2 lg:mt-0 lg:items-center ">
           {/* Bouton Copier */}
-          <button
-            className="h-12 w-20 md:h-14 md:w-24 lg:w-28 mt-9 lg:mt-0 bg-primary rounded-3xl lg:rounded-full text-sm md:text-lg uppercase font-semibold text-white
-       hover:bg-secondary transition-all ease-in-out 
-        duration-200"
-            onClick={() => {
-              navigator.clipboard.writeText(passwordValue);
-            }}
-          >
-            Copier
-          </button>
+          <div className="group">
+            <button
+              className="h-12 w-20 md:h-14 md:w-24 lg:w-28 mt-9 lg:mt-0 bg-primary rounded-3xl lg:rounded-full text-sm md:text-lg uppercase font-semibold text-white
+       hover:bg-secondary transition-all ease-in-out  shadow-2xl
+        duration-200 "
+              onClick={() => {
+                navigator.clipboard.writeText(passwordValue);
+                setShowTooltip(true);
+                setTimeout(() => {
+                  setShowTooltip(false);
+                }, 2500);
+              }}
+            >
+              Copier
+            </button>
+            {showTooltip && <CopyTooltip />}
+          </div>
 
           {/* Sûreté du mot de passe */}
           <button
-            className={`h-12 w-20 md:h-14 md:w-24 lg:w-28 mt-9 lg:mt-0 bg-white  border-red-600 border-2 rounded-3xl lg:rounded-full text-sm md:text-lg font-semibold text-red-600 cursor-pointer 
-          uppercase hover:bg-red-600 hover:text-white
-         transition-all ease-in-out duration-200
-         
+            className={`h-12 w-20 md:h-14 md:w-24 lg:w-28 mt-9 lg:mt-0   border-2 rounded-3xl lg:rounded-full text-sm md:text-lg md:leading-6 font-semibold cursor-pointer 
+          uppercase  text-white
+         transition-all ease-in-out duration-200 shadow-2xl
+         ${
+           passwordLength > 6
+             ? "border-green-600 bg-green-600  "
+             : "border-red-600  bg-red-600"
+         }
+
          `}
           >
-            Fort
+            {passwordSecurity}
+            {/* {passwordLength > 7 ? "Très Fort" : " Faible "} */}
           </button>
         </div>
       </div>
@@ -168,19 +166,20 @@ function Generator() {
 
       <div className="relative h-auto md:h-auto w-full lg:w-[1000px] bg-white rounded-xl mt-9 md:mt-12 lg:mt-14 px-7 py-6  shadow-primary shadow-func_box">
         <div
-          className="w-full space-y-[16px] md:space-y-0   text-base md:text-lg text-secondary font-medium grid grid-cols-1 md:grid-cols-2 
-        md:gap-8 md:row-auto"
+          className="w-full space-y-[16px] md:space-y-0   text-base md:text-lg text-secondary font-bold grid grid-cols-1 md:grid-cols-2 
+        md:gap-8 md:row-auto "
         >
           <div className="switch_div relative">
-            <p>
-              Taille (<strong> {passwordLength} </strong>)
+            <p className="">
+              Taille <span className="font-medium">( {passwordLength} ) </span>
             </p>
             <Slider
-              className="absolute w-2/4 md:w-2/3 -top-2.5 right-2 md:flex md:top-0 md:right-2"
-              defaultValue={50}
+              className="absolute w-2/4 md:w-2/4 lg:w-2/3 -top-2 right-2 md:flex md:top-0 lg:top-[18%] md:right-2"
+              defaultValue={sliderDefaultValue}
               aria-label="Default"
               valueLabelDisplay="auto"
               onChange={(event) => setPasswordLength(event.target.value)}
+              max={50}
             />
           </div>
 
@@ -189,7 +188,6 @@ function Generator() {
             <Switch
               checked={min}
               {...label}
-              defaultChecked
               color="primary"
               onChange={(event) => setMin(event.target.checked)}
             />
@@ -199,7 +197,6 @@ function Generator() {
             <Switch
               checked={maj}
               {...label}
-              defaultChecked
               onChange={(event) => setMaj(event.target.checked)}
             />
           </div>
@@ -209,7 +206,6 @@ function Generator() {
             <Switch
               checked={letters}
               {...label}
-              defaultChecked
               onChange={(event) => setLetters(event.target.checked)}
             />
           </div>
@@ -218,7 +214,6 @@ function Generator() {
             <Switch
               checked={numbers}
               {...label}
-              defaultChecked
               onChange={(event) => setNumbers(event.target.checked)}
             />
           </div>
@@ -227,7 +222,6 @@ function Generator() {
             <Switch
               checked={symboles}
               {...label}
-              defaultChecked
               onChange={(event) => setSymboles(event.target.checked)}
             />
           </div>
@@ -235,7 +229,6 @@ function Generator() {
             <p>Exclure des caractères similaires</p>
             <Switch
               checked={similarCharacters}
-              defaultChecked={false}
               {...label}
               onChange={(event) => setSimilarCharacters(event.target.checked)}
             />
