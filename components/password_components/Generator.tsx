@@ -97,6 +97,12 @@ function Generator() {
     ]
   );
 
+  const iframeCopy = () => {
+    document.addEventListener("copy", (e) => {
+      console.log(e);
+    });
+  };
+
   return (
     <div className="mt-10 lg:mt-12 w-full z-20 relative">
       {/* Input */}
@@ -132,6 +138,7 @@ function Generator() {
         duration-200 "
               onClick={() => {
                 navigator.clipboard.writeText(passwordValue);
+                iframeCopy();
                 setShowTooltip(true);
                 setTimeout(() => {
                   setShowTooltip(false);
