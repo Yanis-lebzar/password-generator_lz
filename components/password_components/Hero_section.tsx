@@ -82,7 +82,7 @@ function Hero_section() {
         />
       </motion.div>
       <motion.div
-        className={` absolute md:w-[78px] md:h-[103px] md:right-[47%] md:bottom-[5%] lockDefault   md:z-10 lg:w-[178px] lg:h-[353px]  lg:right-[22%] lg:bottom-[25%]  ${
+        className={` absolute md:w-[78px] md:h-[103px] md:right-[47%] md:bottom-[5%]    md:z-10 lg:w-[178px] lg:h-[353px]  lg:right-[22%] lg:bottom-[25%]  ${
           passwordLength < 7 ? "locker" : ""
         } `}
         animate={{ rotate: [0, 1, 0, -1, 0, 1, 0, -1, 0, 1, 0, -1, 0] }}
@@ -102,7 +102,7 @@ function Hero_section() {
         />
       </motion.div>
       <motion.div
-        className={`absolute md:w-[58px] md:h-[103px] md:right-[49%] lock_shadowDefault  md:bottom-[0%] md:z-0 lg:w-[178px] lg:h-[353px]  lg:right-[22%] lg:bottom-[8%]  ${
+        className={`absolute md:w-[58px] md:h-[103px] md:right-[49%]   md:bottom-[0%] md:z-0 lg:w-[178px] lg:h-[353px]  lg:right-[22%] lg:bottom-[8%]  ${
           passwordLength < 7 ? "locker_shadow" : ""
         } `}
         animate={{ rotate: [0, 1, 0, -1, 0, 1, 0, -1, 0, 1, 0, -1, 0] }}

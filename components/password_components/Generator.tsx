@@ -150,7 +150,7 @@ function Generator() {
          transition-all ease-in-out duration-200 shadow-2xl
          ${
            passwordLength > 6
-             ? "border-green-600 bg-green-600  "
+             ? "border-blue-500 bg-blue-500 "
              : "border-red-600  bg-red-600"
          }
 
