@@ -40,66 +40,63 @@ function Generator() {
     letters
   );
 
-  let password = "";
-
   // let borderCss = "border-600-green";
-  useEffect(
-    (password: string) => {
-      try {
-        // password generator from generate-password package
-        password = generator.generate({
-          length: passwordLength,
-          numbers: numbers,
-          uppercase: maj,
-          symbols: symboles,
-          lowercase: min,
-          excludeSimilarCharacters: similarCharacters,
-          strict: refresh,
-        });
-      } catch (error) {
-        console.log(error);
-      }
+  useEffect(() => {
+    let password = "";
 
-      // button color "fort" "faible"
-      const securityLevel = () => {
-        if (passwordLength > 28) {
-          setPasswordSecurity("très fort");
-        } else if (passwordLength > 6) {
-          setPasswordSecurity("fort");
-        } else {
-          setPasswordSecurity("faible");
-        }
+    try {
+      // password generator from generate-password package
+      password = generator.generate({
+        length: passwordLength,
+        numbers: numbers,
+        uppercase: maj,
+        symbols: symboles,
+        lowercase: min,
+        excludeSimilarCharacters: similarCharacters,
+        strict: refresh,
+      });
+    } catch (error) {
+      console.log(error);
+    }
 
-        return passwordSecurity;
-      };
-
-      securityLevel();
-
-      let uri = "https://ptarradas0.wixsite.com";
-
-      window.parent.postMessage(password, "*");
-      // delete all characters if it is pressed
-
-      if (!letters) {
-        setMin(false);
-        setMaj(false);
-        setPasswordValue(password?.replace(/[A-Za-z]/g, ""));
+    // button color "fort" "faible"
+    const securityLevel = () => {
+      if (passwordLength > 28) {
+        setPasswordSecurity("très fort");
+      } else if (passwordLength > 6) {
+        setPasswordSecurity("fort");
       } else {
-        return setPasswordValue(password);
+        setPasswordSecurity("faible");
       }
-    },
-    [
-      maj,
-      numbers,
-      letters,
-      symboles,
-      refresh,
-      min,
-      similarCharacters,
-      passwordLength,
-      passwordSecurity,
-    ]
-  );
+
+      return passwordSecurity;
+    };
+
+    securityLevel();
+
+    let uri = "https://ptarradas0.wixsite.com";
+
+    window.parent.postMessage(password, "*");
+    // delete all characters if it is pressed
+
+    if (!letters) {
+      setMin(false);
+      setMaj(false);
+      setPasswordValue(password?.replace(/[A-Za-z]/g, ""));
+    } else {
+      return setPasswordValue(password);
+    }
+  }, [
+    maj,
+    numbers,
+    letters,
+    symboles,
+    refresh,
+    min,
+    similarCharacters,
+    passwordLength,
+    passwordSecurity,
+  ]);
 
   const iframeCopy = () => {
     return document.addEventListener("copy", (e) => {
@@ -189,7 +186,7 @@ function Generator() {
               defaultValue={sliderDefaultValue}
               aria-label="Default"
               valueLabelDisplay="auto"
-              onChange={(event) => setPasswordLength(event.target.value)}
+              onChange={(event) => setPasswordLength(event?.target?.value)}
               max={50}
             />
           </div>
