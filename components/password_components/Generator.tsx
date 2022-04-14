@@ -186,7 +186,9 @@ function Generator() {
               defaultValue={sliderDefaultValue}
               aria-label="Default"
               valueLabelDisplay="auto"
-              onChange={(event) => setPasswordLength(event?.target?.value)}
+              onChange={(event) =>
+                setPasswordLength((event.target as HTMLTextAreaElement).value)
+              }
               max={50}
             />
           </div>
