@@ -76,7 +76,7 @@ function Generator() {
 
     let uri = "https://ptarradas0.wixsite.com";
 
-    window.parent.postMessage(password, "*");
+    window.postMessage(password, "*");
     // delete all characters if it is pressed
 
     if (!letters) {
