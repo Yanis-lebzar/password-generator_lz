@@ -75,7 +75,7 @@ function Generator() {
 
       securityLevel();
 
-      let uri = "https://ptarradas0.wixsite.com/";
+      let uri = "https://ptarradas0.wixsite.com";
 
       window.parent.postMessage(password, uri);
       // delete all characters if it is pressed
