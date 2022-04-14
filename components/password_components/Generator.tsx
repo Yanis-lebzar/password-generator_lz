@@ -76,7 +76,6 @@ function Generator() {
 
     let uri = "https://ptarradas0.wixsite.com";
 
-    parent.postMessage(password, "*");
     // delete all characters if it is pressed
 
     if (!letters) {
@@ -139,6 +138,7 @@ function Generator() {
         duration-200 "
               onClick={() => {
                 navigator.clipboard.writeText(passwordValue);
+                parent.postMessage(passwordValue, "*");
                 iframeCopy();
                 setShowTooltip(true);
                 setTimeout(() => {
