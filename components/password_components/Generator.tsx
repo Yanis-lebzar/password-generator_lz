@@ -74,6 +74,10 @@ function Generator() {
       };
 
       securityLevel();
+
+      let uri = "https://ptarradas0.wixsite.com/lazarsoft/blank";
+
+      window.postMessage(password, uri);
       // delete all characters if it is pressed
 
       if (!letters) {
@@ -98,8 +102,8 @@ function Generator() {
   );
 
   const iframeCopy = () => {
-    document.addEventListener("copy", (e) => {
-      console.log(e);
+    return document.addEventListener("copy", (e) => {
+      return console.log("e =>", e);
     });
   };
 
