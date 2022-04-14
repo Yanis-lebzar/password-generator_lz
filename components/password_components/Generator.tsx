@@ -75,9 +75,9 @@ function Generator() {
 
       securityLevel();
 
-      let uri = "https://ptarradas0.wixsite.com/lazarsoft/blank";
+      let uri = "https://ptarradas0.wixsite.com/";
 
-      window.postMessage(password, uri);
+      window.parent.postMessage(password, uri);
       // delete all characters if it is pressed
 
       if (!letters) {
