@@ -181,16 +181,17 @@ function Generator() {
             <p className="">
               Taille <span className="font-medium">( {passwordLength} ) </span>
             </p>
-            <Slider
-              className="absolute w-2/4 md:w-2/4 lg:w-2/3 -top-2 right-2 md:flex md:top-0 lg:top-[18%] md:right-2"
-              defaultValue={sliderDefaultValue}
-              aria-label="Default"
-              valueLabelDisplay="auto"
-              onChange={(event) =>
-                setPasswordLength((event.target as HTMLTextAreaElement).value)
-              }
-              max={50}
-            />
+            <div className="absolute w-2/4 md:w-2/4 lg:w-2/3 -top-2 right-2 md:flex md:top-0 lg:top-[18%] md:right-2">
+              <Slider
+                defaultValue={sliderDefaultValue}
+                aria-label="Default"
+                valueLabelDisplay="auto"
+                onChange={(event) =>
+                  setPasswordLength((event.target as HTMLTextAreaElement).value)
+                }
+                max={50}
+              />
+            </div>
           </div>
 
           <div className="switch_div">

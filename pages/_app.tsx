@@ -5,7 +5,7 @@ import { AppProvider } from "../AppContext";
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <AppProvider>
-      <Component {...pageProps} />;
+      <Component {...pageProps} />
     </AppProvider>
   );
 }
